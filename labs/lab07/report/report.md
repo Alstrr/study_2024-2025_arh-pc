@@ -186,8 +186,9 @@ cmp... ,0, jz finished, inc eax - текст программы
 
 Как я поняла я должна решить такой же вариант как и в 6 лабораторной работе, это - 2 вариант
 Написала программу для нахождения наименьшего числа из 3. (рис. -@fig:012).
+во время написания кода, у меня возникли сомнения надо ли вводить  число B с клавиатуры, поэтому я сделала два варианта написания кода. (рис. -@fig:013).
 
-![код](image/12.PNG){ #fig:012 width=70% }
+![первый вариант кода](image/12.PNG){ #fig:012 width=70% }
 
 Код первой программы:
 
@@ -239,13 +240,78 @@ mov eax,[min] ; eax = min
 call iprintLF ; вывод
 call quit
 ```
-Проверяю корректность работы кода. (рис. [-@fig:013]).
+![второй вариант кода](image/16.png){ #fig:013 width=70% }
 
-![Первая программа самостоятельной работы](image/13.PNG){ #fig:013 width=70%} 
+```NASM
+%include 'in_out.asm'
+section .data
+msg db 'Введите B: ', 0h
+msg1 db 'Наименьшее число: ',0h
+A dd '82'
 
-Написала программу, которая для двух введенных с клавиатуры значение вычисляет требуемое значение и выводит результат. (рис. -@fig:014).
+C dd '61'
 
-![код](image/14.PNG){#fig:014 width=70%}
+section .bss
+min resb 10
+B resb 10
+
+section .text
+global _start
+_start:
+
+mov eax, msg
+call sprint
+
+mov ecx, B
+mov edx, 10
+call sread
+
+mov eax,A
+call atoi 
+mov [A],eax 
+
+mov eax,B
+call atoi 
+mov [B],eax 
+
+mov eax,C
+call atoi 
+mov [C],eax 
+
+mov ecx,[A] ; ecx = A
+mov [min],ecx ; min = A
+
+cmp ecx,[C] ; A ? C
+jb check_B ; if A < C |-> check_B
+mov ecx,[C] ; if A > C |-> ecx = C
+mov [min],ecx ; min = C
+
+check_B:
+mov ecx,[min] ; ecx = min(A/C)
+cmp ecx,[B] ; A/C ? B
+jb fin ; if A/C < B |-> fin
+mov ecx,[B] ; if A/C > B |-> ecx = B
+mov [min],ecx ; min = B
+
+fin:
+mov eax, msg1 ; eax = msg1
+call sprint ; вывод
+mov eax,[min] ; eax = min
+call iprintLF ; вывод
+call quit
+```
+
+Проверяю корректность работы кода первого варианта. (рис. [-@fig:014]).
+
+![Первая программа самостоятельной работы](image/13.PNG){ #fig:014 width=70%} 
+
+Проверяю корректность работы кода второго варианта. (рис. [-@fig:015]).
+
+![Вторая программа самостоятельной работы](image/17.png){ #fig:015 width=70%} 
+
+Написала программу, которая для двух введенных с клавиатуры значение вычисляет требуемое значение и выводит результат. (рис. -@fig:016).
+
+![код](image/14.PNG){#fig:016 width=70%}
 
 Код второй программы:
 
@@ -307,9 +373,9 @@ call iprintLF
 call quit
 ```
 
-Проверяю корректность работы кода. (рис. -@fig:015).
+Проверяю корректность работы кода. (рис. -@fig:017).
 
-![Вторая программа самостоятельной работы](image/15.PNG){#fig:015 width=70%}
+![Вторая программа самостоятельной работы](image/15.PNG){#fig:017 width=70%}
 
 
 # Выводы
